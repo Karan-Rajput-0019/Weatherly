@@ -1,4 +1,3 @@
-// Welcome overlay and quotes
 const quotes = [
   "Weather is a great metaphor for life – sometimes it's good, sometimes it's bad, and there's nothing much you can do about it but carry an umbrella.",
   "No weather is bad if you're properly dressed for it.",
@@ -7,10 +6,12 @@ const quotes = [
   "Wherever you go, no matter what the weather, always bring your own sunshine."
 ];
 
-function showWelcome() {
+document.addEventListener("DOMContentLoaded", function() {
+  // WELCOME OVERLAY LOGIC
   const overlay = document.getElementById("welcome-overlay");
   const quoteEl = document.getElementById("welcome-quote");
   const enterBtn = document.getElementById("enter-app");
+
   if (overlay && quoteEl && enterBtn) {
     quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
     overlay.style.display = "flex";
@@ -18,14 +19,13 @@ function showWelcome() {
     enterBtn.onclick = () => {
       overlay.style.display = "none";
       document.body.style.overflow = "";
-      if (document.querySelector('.input-box')) {
-        document.querySelector('.input-box').focus();
-      }
+      const inputBox = document.querySelector('.input-box');
+      if (inputBox) inputBox.focus();
     };
   }
-}
+});
 
-// Place this at the top
+
 window.onload = function() {
   showWelcome();
   // ...your other initialization for weather app below

@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up - Weatherly</title>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container auth-container">
-    <h2 class="auth-title">Create Account</h2>
-    <form class="auth-form" autocomplete="off">
-      <div class="form-group">
-        <label for="signup-name">Name</label>
-        <input type="text" id="signup-name" class="input-box" placeholder="Enter your name" required/>
+  <div class="auth-outer">
+    <form class="auth-card" autocomplete="off">
+      <h2 class="auth-card-title">Create your Weatherly account</h2>
+      <div class="input-row">
+        <label><i class="fa-solid fa-user"></i></label>
+        <input type="text" class="auth-input" placeholder="Name" required/>
       </div>
-      <div class="form-group">
-        <label for="signup-email">Email</label>
-        <input type="email" id="signup-email" class="input-box" placeholder="Enter your email" required/>
+      <div class="input-row">
+        <label><i class="fa-solid fa-envelope"></i></label>
+        <input type="email" class="auth-input" placeholder="Email" required/>
       </div>
-      <div class="form-group">
-        <label for="signup-password">Password</label>
-        <input type="password" id="signup-password" class="input-box" placeholder="Choose a password" required/>
+      <div class="input-row">
+        <label><i class="fa-solid fa-lock"></i></label>
+        <input type="password" class="auth-input" placeholder="Password" required/>
       </div>
-      <button type="submit" class="auth-btn">Sign Up</button>
-      <p class="auth-footer">Already have an account? <a href="login.html">Login</a></p>
+      <button type="submit" class="auth-submit-btn">Sign Up</button>
+      <div class="auth-switch">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+      <div class="back-home">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+      </div>
     </form>
   </div>
 </body>
