@@ -9,17 +9,18 @@
 </head>
 <body>
   <div class="auth-outer">
-    <form class="auth-card" autocomplete="off">
+    <form class="auth-card" autocomplete="off" role="form" aria-label="Login Form">
       <h2 class="auth-card-title">Login to Weatherly</h2>
       <div class="input-row">
-        <label><i class="fa-solid fa-envelope"></i></label>
-        <input type="email" class="auth-input" placeholder="Email" required/>
+        <label for="loginEmail"><i class="fa-solid fa-envelope"></i></label>
+        <input type="email" class="auth-input" id="loginEmail" aria-label="Email" placeholder="Email" required tabindex="0"/>
       </div>
       <div class="input-row">
-        <label><i class="fa-solid fa-lock"></i></label>
-        <input type="password" class="auth-input" placeholder="Password" required/>
+        <label for="loginPassword"><i class="fa-solid fa-lock"></i></label>
+        <input type="password" class="auth-input" id="loginPassword" aria-label="Password" placeholder="Password" required tabindex="0"/>
+        <span class="toggle-password" onclick="togglePassword('loginPassword', this)" tabindex="0" aria-label="Show/Hide Password">👁️</span>
       </div>
-      <button type="submit" class="auth-submit-btn">Login</button>
+      <button type="submit" class="auth-submit-btn" tabindex="0">Login</button>
       <div class="auth-switch">
         Don't have an account? <a href="signup.html">Sign Up</a>
       </div>
@@ -28,6 +29,19 @@
       </div>
     </form>
   </div>
+  <script>
+    function togglePassword(id, el) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      if (input.type === "password") {
+        input.type = "text";
+        el.textContent = "🙈";
+      } else {
+        input.type = "password";
+        el.textContent = "👁️";
+      }
+    }
+  </script>
 </body>
 </html>
 

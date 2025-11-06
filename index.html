@@ -5,39 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weatherly - Styled Weather App</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Welcome Overlay Section -->
+  <!-- Navigation bar with organized controls -->
+  <nav class="app-nav">
+    <div class="auth-buttons">
+      <a href="login.html" class="auth-btn-link">Login</a>
+      <a href="signup.html" class="auth-btn-link">Sign Up</a>
+      <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="profile.html" class="profile-btn" aria-label="User Profile">
+        <i class="fa-solid fa-user"></i>
+      </a>
+      <div class="select-row">
+        <select id="lang-switcher" class="styled-select" aria-label="Language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+        <select id="fontSelect" class="styled-select" aria-label="Font style">
+          <option value="'Poppins',sans-serif">Poppins</option>
+          <option value="'Segoe UI',sans-serif">Segoe UI</option>
+          <option value="'Roboto',sans-serif">Roboto</option>
+        </select>
+      </div>
+      <input type="color" id="themeColor" class="color-picker" aria-label="Primary color" />
+    </div>
+  </nav>
+  
+  <!-- Welcome overlay -->
   <div id="welcome-overlay" class="welcome-overlay">
-    <div class="welcome-card">
+    <div class="welcome-card" role="dialog" aria-modal="true">
       <h2 class="welcome-title">Welcome to Weatherly!</h2>
       <p id="welcome-quote" class="welcome-quote"></p>
-      <button id="enter-app" class="welcome-btn">Get Started</button>
+      <button id="enter-app" class="welcome-btn" aria-label="Enter Weatherly">Get Started</button>
     </div>
   </div>
-  <div class="auth-buttons">
-    <a href="login.html" class="auth-btn-link">Login</a>
-    <a href="signup.html" class="auth-btn-link">Sign Up</a>
-  </div>
-  <div class="container">
+
+  <main class="container" role="main" aria-label="Weather Display">
     <div class="header">
-      <h1 class="app-title">Weatherly</h1>
-      <p class="app-tagline">Discover the weather in style</p>
+      <h1 class="app-title" id="brandTitle">Weatherly</h1>
+      <p class="app-tagline" id="brandTagline">Discover the weather in style</p>
     </div>
     <div class="search-box">
-      <input type="text" placeholder="Enter location..." class="input-box" />
-      <button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
+      <input type="text" placeholder="Enter location..." class="input-box" aria-label="Location" tabindex="0" />
+      <button id="searchBtn" class="fa-solid fa-magnifying-glass" aria-label="Search weather" tabindex="0"></button>
     </div>
-    <div class="location-not-found">
+    <div class="location-not-found" aria-live="assertive">
       <img src="assets/404.png" alt="Location Not Found" />
-      <h1>Oops! Couldn't find that place.</h1>
+      <h1 id="notFoundTxt">Oops! Couldn't find that place.</h1>
     </div>
     <div class="weather-body">
-      <img src="assets/cloud.png" alt="Weather" class="weather-img" />
+      <lottie-player id="weatherLottie" class="weather-lottie" style="width:70px" autoplay loop></lottie-player>
       <div class="weather-box">
-        <p class="temperature">0<sup>°C</sup></p>
-        <p class="description">Light Rain</p>
+        <p class="temperature" id="mainTemp">0<sup>°C</sup></p>
+        <p class="description" id="mainDesc">Light Rain</p>
       </div>
       <div class="weather-details">
         <div class="humidity detail-card">
@@ -52,7 +76,9 @@
         </div>
       </div>
     </div>
-  </div>
+    <div id="forecast" class="forecast-cards" aria-label="Weather Forecast"></div>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>

@@ -9,21 +9,22 @@
 </head>
 <body>
   <div class="auth-outer">
-    <form class="auth-card" autocomplete="off">
+    <form class="auth-card" autocomplete="off" role="form" aria-label="Sign Up Form">
       <h2 class="auth-card-title">Create your Weatherly account</h2>
       <div class="input-row">
-        <label><i class="fa-solid fa-user"></i></label>
-        <input type="text" class="auth-input" placeholder="Name" required/>
+        <label for="signupName"><i class="fa-solid fa-user"></i></label>
+        <input type="text" class="auth-input" id="signupName" aria-label="Name" placeholder="Name" required tabindex="0"/>
       </div>
       <div class="input-row">
-        <label><i class="fa-solid fa-envelope"></i></label>
-        <input type="email" class="auth-input" placeholder="Email" required/>
+        <label for="signupEmail"><i class="fa-solid fa-envelope"></i></label>
+        <input type="email" class="auth-input" id="signupEmail" aria-label="Email" placeholder="Email" required tabindex="0"/>
       </div>
       <div class="input-row">
-        <label><i class="fa-solid fa-lock"></i></label>
-        <input type="password" class="auth-input" placeholder="Password" required/>
+        <label for="signupPassword"><i class="fa-solid fa-lock"></i></label>
+        <input type="password" class="auth-input" id="signupPassword" aria-label="Password" placeholder="Password" required tabindex="0"/>
+        <span class="toggle-password" onclick="togglePassword('signupPassword', this)" tabindex="0" aria-label="Show/Hide Password">👁️</span>
       </div>
-      <button type="submit" class="auth-submit-btn">Sign Up</button>
+      <button type="submit" class="auth-submit-btn" tabindex="0">Sign Up</button>
       <div class="auth-switch">
         Already have an account? <a href="login.html">Login</a>
       </div>
@@ -32,5 +33,18 @@
       </div>
     </form>
   </div>
+  <script>
+    function togglePassword(id, el) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      if (input.type === "password") {
+        input.type = "text";
+        el.textContent = "🙈";
+      } else {
+        input.type = "password";
+        el.textContent = "👁️";
+      }
+    }
+  </script>
 </body>
 </html>

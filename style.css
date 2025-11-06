@@ -399,3 +399,148 @@ body {
   .auth-card-title { font-size: 1.22rem; }
   .auth-card { padding: 21px 4vw 15px 4vw;}
 }
+.theme-btn {
+  background: #fffbe9;
+  color: #375d8f;
+  border: none;
+  border-radius: 50%;
+  padding: 6px 14px;
+  margin-left: 16px;
+  font-size: 1.3rem;
+  box-shadow: 0 2px 8px rgba(52,152,219,0.11);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.theme-btn.dark { background: #23283e; color: #ffd194; }
+body.dark-mode { background: linear-gradient(135deg,#23283e 0%,#546e7a 100%);}
+.container.dark, .auth-card.dark { background: rgba(30,34,51,0.95); color: #ffd194; }
+
+.forecast-cards {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: center;
+}
+.forecast-card {
+  background: rgba(255,255,255,0.88);
+  border-radius: 16px;
+  padding: 10px 6px;
+  min-width: 70px;
+  text-align: center;
+  font-size: 0.93rem;
+  box-shadow: 0 2px 9px #81d4fa29;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.forecast-card .forecast-temp {
+  font-weight: bold;
+  color: #375d8f;
+  margin-bottom: 2px;
+}
+.forecast-card .forecast-icon { width: 30px; margin-bottom: 1px; }
+.toggle-password { cursor: pointer; margin-left: 5px; user-select: none; }
+:root { --theme-primary: #70e1f5; }
+body { background: linear-gradient(135deg, var(--theme-primary) 0%, #ffd194 100%); font-family: 'Poppins',sans-serif; }
+.auth-btn-link:focus, .theme-btn:focus, #searchBtn:focus, #enter-app:focus { outline: 2px solid #70e1f5; }
+.weather-lottie { outline: none; }
+[aria-label], [aria-modal] { outline: none; }
+.theme-customizer {
+  margin: 0 auto 14px auto;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+.container, .auth-card { font-family: 'Poppins', sans-serif; }
+body.dark-mode { background: linear-gradient(135deg,#23283e 0%,#546e7a 100%);}
+.container.dark, .auth-card.dark { background: rgba(30,34,51,0.95); color: #ffd194; }
+.auth-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+/* Profile button stands out with ring/hover style */
+.profile-btn {
+  background: linear-gradient(135deg, #79cafc 0%, #ffe8b5 100%);
+  display: inline-flex;
+  align-items: center;
+  border-radius: 50%;
+  padding: 8px 10px;
+  font-size: 1.28rem;
+  box-shadow: 0 2px 7px #dcecff79;
+  transition: background .18s, box-shadow .19s;
+  color: #313866;
+  border: 2px solid #70e1f5;
+}
+.profile-btn:hover, .profile-btn:focus {
+  background: #ffb347;
+  color: #fff;
+  box-shadow: 0 4px 13px #ffc37157;
+  border-color: #ffb347;
+}
+
+/* Theme toggle visually distinct with drop shadow */
+.theme-btn {
+  background: linear-gradient(135deg, #ffe8b5 0%, #70e1f5 80%);
+  color: #375d8f;
+  border: 2px solid #ffc371;
+  border-radius: 50%;
+  padding: 9px 12px;
+  font-size: 1.20rem;
+  box-shadow: 0 3px 13px #ffe8b579;
+  cursor: pointer;
+  transition: background .18s, color .21s, border-color .16s;
+}
+.theme-btn.dark {
+  background: #23283e;
+  color: #ffd194;
+  border-color: #ffd194;
+}
+
+/* Dropdown styling for language/font */
+.styled-select {
+  background: linear-gradient(133deg, #eec0c6 70%, #7ee8fa 100%);
+  color: #313866;
+  border-radius: 12px;
+  border: 1.5px solid #79cafc;
+  padding: 7px 13px;
+  margin: 0 6px;
+  font-size: 1.04rem;
+  font-weight: 500;
+  box-shadow: 0 2px 7px #eec0c640;
+  transition: border-color .15s;
+  outline: none;
+}
+.styled-select:focus, .styled-select:hover {
+  border-color: #ffb347;
+  background: #f7e5d1;
+}
+.select-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Color picker styled as button */
+.color-picker {
+  appearance: none;
+  border: 2px solid #70e1f5;
+  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(133deg, #eec0c6 60%, #7ee8fa 100%);
+  margin-left: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 6px #7ee8fa52;
+  transition: border-color .14s;
+  padding: 1px;
+}
+.color-picker::-webkit-color-swatch {
+  border-radius: 10px;
+}
+.color-picker:focus, .color-picker:hover {
+  border-color: #ffb347;
+}
