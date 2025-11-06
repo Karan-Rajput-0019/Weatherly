@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App With JavaScript</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weatherly - Styled Weather App</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="search-box">
-                <input type="text" placeholder="Enter your location" class="input-box">
-
-                <button class="fa-solid fa-magnifying-glass" id="searchBtn"></button>
-            </div>
-        </div>
-
-        <div class="location-not-found">
-            <h1>Sorry, Location not found!!!</h1>
-            <img src="/assets/404.png" alt="404 Error">
-        </div>
-
-        <div class="weather-body">
-            <img src="/assets/cloud.png" alt="Weather Image" class="weather-img">
-
-            <div class="weather-box">
-                <p class="temperature">0 <sup>°C</sup></p>
-                <p class="description">light rain</p>
-            </div>
-
-            <div class="weather-details">
-                <div class="humidity">
-                    <i class="fa-sharp fa-solid fa-droplet"></i>
-                    <div class="text">
-                        <span id="humidity">45%</span>
-                        <p>Humidity</p>
-                    </div>
-                </div>
-
-                <div class="wind">
-                    <i class="fa-solid fa-wind"></i>
-                    <div class="text">
-                        <span id="wind-speed">12Km/H</span>
-                        <p>Wind Speed</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Welcome Overlay Section -->
+  <div id="welcome-overlay" class="welcome-overlay">
+    <div class="welcome-card">
+      <h2 class="welcome-title">Welcome to Weatherly!</h2>
+      <p id="welcome-quote" class="welcome-quote"></p>
+      <button id="enter-app" class="welcome-btn">Get Started</button>
     </div>
+  </div>
 
+  <!-- Auth Buttons Section -->
+  <div class="auth-buttons">
+    <a href="login.html" class="auth-btn-link">Login</a>
+    <a href="signup.html" class="auth-btn-link">Sign Up</a>
+  </div>
 
-    <script src="script.js"></script>
-    <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
+  <div class="container">
+    <div class="header">
+      <h1 class="app-title">Weatherly</h1>
+      <p class="app-tagline">Discover the weather in style</p>
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Enter location..." class="input-box" />
+      <button id="searchBtn" class="fa-solid fa-magnifying-glass"></button>
+    </div>
+    <div class="location-not-found">
+      <img src="assets/404.png" alt="Location Not Found" />
+      <h1>Oops! Couldn't find that place.</h1>
+    </div>
+    <div class="weather-body">
+      <img src="assets/cloud.png" alt="Weather" class="weather-img" />
+      <div class="weather-box">
+        <p class="temperature">0<sup>°C</sup></p>
+        <p class="description">Light Rain</p>
+      </div>
+      <div class="weather-details">
+        <div class="humidity detail-card">
+          <i class="fa-solid fa-droplet"></i>
+          <span id="humidity">45%</span>
+          <label>Humidity</label>
+        </div>
+        <div class="wind detail-card">
+          <i class="fa-solid fa-wind"></i>
+          <span id="wind-speed">12 Km/H</span>
+          <label>Wind Speed</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
