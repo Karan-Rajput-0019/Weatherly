@@ -51,7 +51,7 @@ document.getElementById('loginForm').onsubmit = async function(e) {
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
 
-  const res = await fetch('http://localhost:5000/api/auth/login', {
+  const res = await fetch('https://weatherly-5gvr.onrender.com', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({email, password})
