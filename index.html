@@ -9,29 +9,31 @@
   <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Navigation bar with organized controls -->
   <nav class="app-nav">
     <div class="auth-buttons">
       <a href="login.html" class="auth-btn-link">Login</a>
       <a href="signup.html" class="auth-btn-link">Sign Up</a>
-      <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">
-        <i class="fa-solid fa-moon"></i>
+      <button id="theme-toggle" class="theme-btn" aria-label="Theme" tabindex="0">
+        <span class="theme-text">Theme</span>
+        <span class="theme-switch">
+          <span class="toggle-circle"></span>
+        </span>
       </button>
-      <a href="profile.html" class="profile-btn" aria-label="User Profile">
-        <i class="fa-solid fa-user"></i>
+      <a href="profile.html" class="profile-btn" aria-label="User Profile" tabindex="0">
+        <img src="assets/default-avatar.png" alt="User avatar" class="nav-avatar"/>
       </a>
       <div class="select-row">
-        <select id="lang-switcher" class="styled-select" aria-label="Language">
+        <select id="lang-switcher" class="styled-select" aria-label="Language" tabindex="0">
           <option value="en">English</option>
           <option value="hi">हिन्दी</option>
         </select>
-        <select id="fontSelect" class="styled-select" aria-label="Font style">
+        <select id="fontSelect" class="styled-select" aria-label="Font style" tabindex="0">
           <option value="'Poppins',sans-serif">Poppins</option>
           <option value="'Segoe UI',sans-serif">Segoe UI</option>
           <option value="'Roboto',sans-serif">Roboto</option>
         </select>
       </div>
-      <input type="color" id="themeColor" class="color-picker" aria-label="Primary color" />
+      <input type="color" id="themeColor" class="color-picker" aria-label="Primary color" tabindex="0" />
     </div>
   </nav>
   

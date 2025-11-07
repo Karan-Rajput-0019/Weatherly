@@ -8,8 +8,15 @@
   <script src="https://kit.fontawesome.com/595a890311.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <nav class="app-nav">
+    <a href="index.html" class="auth-btn-link">Home</a>
+    <a href="login.html" class="auth-btn-link">Login</a>
+  </nav>
   <div class="auth-outer">
     <form class="auth-card" autocomplete="off" role="form" aria-label="Sign Up Form">
+      <div class="login-avatar-center">
+        <img src="assets/default-avatar.png" alt="User Avatar" class="nav-avatar">
+      </div>
       <h2 class="auth-card-title">Create your Weatherly account</h2>
       <div class="input-row">
         <label for="signupName"><i class="fa-solid fa-user"></i></label>
@@ -27,9 +34,6 @@
       <button type="submit" class="auth-submit-btn" tabindex="0">Sign Up</button>
       <div class="auth-switch">
         Already have an account? <a href="login.html">Login</a>
-      </div>
-      <div class="back-home">
-        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
       </div>
     </form>
   </div>
