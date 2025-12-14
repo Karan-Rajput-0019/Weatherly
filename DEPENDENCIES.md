@@ -1,317 +1,284 @@
 # 📦 Installation & Dependency Guide
 
-## Backend Dependencies Installed
+## Backend Dependencies
 
-### Backend package.json includes:
-```json
-{
-  "axios": "^1.4.0",       // HTTP requests to weather API
-  "bcrypt": "^5.1.0",      // Password hashing
-  "cors": "^2.8.5",        // Cross-origin requests
-  "dotenv": "^16.0.3",     // Environment variables
-  "express": "^4.18.2",    // Web framework
-  "jsonwebtoken": "^9.0.0", // JWT authentication
-  "mongoose": "^7.5.0"     // MongoDB ODM
-}
-```
+### Backend Required Packages
 
-### Backend DevDependencies:
-```json
-{
-  "nodemon": "^3.0.1"      // Auto-reload during development
-}
-```
+| Package | Purpose | Usage |
+|---------|---------|-------|
+| axios | HTTP requests to weather API | Fetch data from OpenWeatherMap |
+| bcrypt | Password hashing | Secure user passwords |
+| cors | Cross-origin requests | Allow frontend to access API |
+| dotenv | Environment variables | Load .env configuration |
+| express | Web framework | Server routing and middleware |
+| jsonwebtoken | JWT authentication | User session management |
+| mongoose | MongoDB ODM | Database operations |
 
-## Frontend Dependencies Installed
+### Development Packages
 
-### Frontend package.json includes:
-```json
-{
-  "axios": "^1.13.2",           // HTTP client
-  "react": "^18.2.0",           // UI library
-  "react-dom": "^18.2.0",       // DOM rendering
-  "react-router-dom": "^7.9.6"  // Client-side routing
-}
-```
+| Package | Purpose | Usage |
+|---------|---------|-------|
+| nodemon | Auto-reload during development | Watch file changes |
 
-No external CSS frameworks - pure CSS3!
+## Frontend Dependencies
 
-## 🔧 Installation Commands
+### Required Packages
+
+| Package | Purpose | Usage |
+|---------|---------|-------|
+| react | UI library | Build user interface |
+| react-dom | DOM rendering | Render React components |
+| react-router-dom | Client-side routing | Navigation between pages |
+| axios | HTTP client | Make API requests |
+
+**Note**: No external CSS frameworks - pure CSS3!
+
+## Installation Instructions
 
 ### Backend Setup
+
 ```bash
-# Navigate to backend directory
 cd backend
-
-# Install all dependencies
 npm install
+```
 
-# Or with yarn
-yarn install
+Verify installation:
 
-# Install specific versions if needed
-npm install express@^4.18.2 mongoose@^7.5.0 bcrypt@^5.1.0 jsonwebtoken@^9.0.0 cors@^2.8.5 dotenv@^16.0.3 axios@^1.4.0 nodemon@^3.0.1 --save
+```bash
+npm list
 ```
 
 ### Frontend Setup
+
 ```bash
-# Navigate to frontend directory
 cd Frontend
-
-# Install all dependencies
 npm install
-
-# Or with yarn
-yarn install
 ```
 
-## ✅ Verification Steps
+Verify installation:
 
-### Backend Verification
+```bash
+npm list
+```
+
+## Package Verification
+
+### Backend Packages
+
+To check if all packages installed correctly:
+
 ```bash
 cd backend
-
-# Check if node_modules exists
-ls -la node_modules
-
-# Verify Express is installed
-npm list express
-
-# Start the server (should run on port 5000)
-npm start
-
-# Expected output:
-# ✓ MongoDB connected successfully
-# ✓ Backend running on port 5000
+npm list --depth=0
 ```
 
-### Frontend Verification
+Expected output shows:
+
+- axios@1.4.0 or higher
+- bcrypt@5.1.0 or higher
+- cors@2.8.5 or higher
+- dotenv@16.0.3 or higher
+- express@4.18.2 or higher
+- jsonwebtoken@9.0.0 or higher
+- mongoose@7.5.0 or higher
+- nodemon@3.0.1 or higher (dev)
+
+### Frontend Packages
+
+To check if all packages installed correctly:
+
 ```bash
 cd Frontend
-
-# Check if node_modules exists
-ls -la node_modules
-
-# Verify React is installed
-npm list react
-
-# Start the dev server (should open http://localhost:3000)
-npm start
-
-# Expected: React app opens in browser
+npm list --depth=0
 ```
 
-## 📋 Pre-Installation Checklist
+Expected output shows:
 
-Before running `npm install`, ensure you have:
+- react@18.2.0 or higher
+- react-dom@18.2.0 or higher
+- react-router-dom@7.9.6 or higher
+- axios@1.13.2 or higher
 
-- [ ] Node.js v14+ installed (`node --version`)
-- [ ] npm v6+ installed (`npm --version`)
-- [ ] MongoDB installed or MongoDB Atlas account
-- [ ] OpenWeatherMap API key
-- [ ] Text editor (VS Code recommended)
-- [ ] Git installed (for version control)
-- [ ] Active internet connection
-
-## 🚨 Common Installation Issues
+## Troubleshooting Dependencies
 
 ### Issue: npm command not found
-**Solution:**
+
+**Solution**: Install Node.js from [nodejs.org](https://nodejs.org)
+
 ```bash
-# Download and install Node.js from nodejs.org
-# This automatically installs npm
-# Verify installation:
+# Verify installation
 node --version
 npm --version
 ```
 
 ### Issue: Permission denied (Mac/Linux)
-**Solution:**
-```bash
-# Use sudo if necessary
-sudo npm install
 
-# Or fix npm permissions:
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-export PATH=~/.npm-global/bin:$PATH
-source ~/.bashrc
+**Solution**: Use sudo with caution
+
+```bash
+sudo npm install -g npm@latest
 ```
 
 ### Issue: node_modules folder too large
-**Solution:**
-```bash
-# Delete and reinstall
-rm -rf node_modules package-lock.json
-npm install
 
-# Or use npm ci for cleaner install
-npm ci
+**Solution**: Delete and reinstall cleanly
+
+```bash
+rm -rf node_modules
+npm install
 ```
 
 ### Issue: Old packages causing conflicts
-**Solution:**
+
+**Solution**: Clear npm cache and reinstall
+
 ```bash
-# Clear npm cache
 npm cache clean --force
-
-# Update npm itself
-npm install -g npm@latest
-
-# Reinstall dependencies
-rm -rf node_modules package-lock.json
+rm -rf node_modules
 npm install
 ```
 
 ### Issue: Dependencies not installing
-**Solution:**
+
+**Solution**: Use different registry or retry
+
 ```bash
-# Check npm registry
-npm config set registry https://registry.npmjs.org/
-
-# Try with verbose output
-npm install --verbose
-
-# Use different version of npm
-npm install -g npm@9.0.0
-npm install
+npm install --legacy-peer-deps
 ```
 
-## 🔍 Dependency Details
+## Detailed Package Information
 
-### Why Each Package?
+### Backend
 
-#### Backend
-| Package | Purpose | Usage |
-|---------|---------|-------|
-| Express | Web framework | API server |
-| MongoDB/Mongoose | Database & ODM | User data storage |
-| Bcrypt | Password hashing | Secure passwords |
-| JWT | Authentication | User sessions |
-| Axios | HTTP client | Weather API calls |
-| CORS | Cross-origin | Frontend-backend communication |
-| Dotenv | Config management | Environment variables |
-| Nodemon | Dev tool | Auto-reload on file changes |
+**Express.js**: Web server framework for Node.js
 
-#### Frontend
-| Package | Purpose | Usage |
-|---------|---------|-------|
-| React | UI library | Components and UI |
-| React-DOM | React renderer | Browser rendering |
-| React-Router | Navigation | Page routing |
-| Axios | HTTP client | API calls |
+- Handles HTTP requests/responses
+- Middleware support
+- Routing system
 
-## 📥 npm vs yarn
+**Mongoose**: MongoDB Object Data Modeling
 
-### Using npm (included with Node.js)
-```bash
-npm install          # Install dependencies
-npm install package  # Add new package
-npm update          # Update packages
-npm uninstall pkg   # Remove package
-npm list            # Show installed packages
-npm start           # Run start script
-```
+- Schema definition
+- Data validation
+- Query building
 
-### Using yarn (alternative)
-```bash
-yarn install        # Install dependencies
-yarn add package    # Add new package
-yarn upgrade        # Update packages
-yarn remove pkg     # Remove package
-yarn list           # Show installed packages
-yarn start          # Run start script
-```
+**bcrypt**: Password hashing library
 
-## 🌐 Environment Setup
+- Secure password storage
+- Salt generation
+- Password comparison
 
-### Node.js Versions
-- **Recommended**: v18.x LTS or v20.x LTS
-- **Minimum**: v14.x
-- **Check version**: `node --version`
+**JWT (jsonwebtoken)**: Token-based authentication
 
-### npm Versions
-- **Recommended**: v9.x or higher
-- **Update npm**: `npm install -g npm@latest`
+- Create tokens
+- Verify tokens
+- Handle expiration
 
-## 📚 Package.json Files
+**Axios**: HTTP client library
 
-### Backend package.json location
-```
+- Make API requests
+- Handle responses
+- Error handling
+
+**CORS**: Cross-Origin Resource Sharing middleware
+
+- Allow frontend requests
+- Configure allowed origins
+- Handle preflight requests
+
+**Dotenv**: Environment variable loader
+
+- Load .env file
+- Access configuration
+- Keep secrets safe
+
+### Frontend
+
+**React**: JavaScript library for UI
+
+- Component-based architecture
+- State management
+- Virtual DOM
+
+**React Router DOM**: Routing library
+
+- Client-side navigation
+- Dynamic route matching
+- History management
+
+**Axios**: HTTP client for API calls
+
+- Intercept requests
+- Handle errors
+- Transform data
+
+## Node.js and npm Versions
+
+### Minimum Requirements
+
+- **Node.js**: v14.x or higher
+- **npm**: v6.x or higher
+
+### Recommended Versions
+
+- **Node.js**: v18.x LTS or v20.x LTS
+- **npm**: v9.x or higher
+
+## File Locations
+
+### Backend package.json
+
+```text
 Weather/backend/package.json
 ```
 
-### Frontend package.json location
-```
+### Frontend package.json
+
+```text
 Weather/Frontend/package.json
 ```
 
-Both files are pre-configured with all necessary dependencies!
+## Disk Space Requirements
 
-## 🔐 Security Notes
+When dependencies are installed:
 
-All packages are from official npm registry. Before using in production:
-
-1. Run security audit:
-   ```bash
-   npm audit
-   npm audit fix
-   ```
-
-2. Keep packages updated:
-   ```bash
-   npm outdated
-   npm update
-   ```
-
-3. Review package vulnerabilities:
-   ```bash
-   npm audit --audit-level=moderate
-   ```
-
-## 💾 Storage Requirements
-
-Approximate disk space after npm install:
 - Backend node_modules: ~500 MB
-- Frontend node_modules: ~800 MB
-- Total: ~1.3 GB
+- Frontend node_modules: ~300 MB
+- Total: ~800 MB
 
-**Tip**: Add `node_modules/` to `.gitignore` (already done!)
+Make sure you have at least 1 GB of free disk space.
 
-## 🔄 Reinstalling Dependencies
+## Installation Time
 
-If you have issues, start fresh:
+Typical installation times:
 
-```bash
-# Backend
-cd backend
-rm -rf node_modules package-lock.json
-npm cache clean --force
-npm install
+- Backend dependencies: 1-3 minutes
+- Frontend dependencies: 1-2 minutes
+- Total first install: 3-5 minutes
 
-# Frontend
-cd ../Frontend
-rm -rf node_modules package-lock.json
-npm cache clean --force
-npm install
-```
+Speed depends on internet connection and system performance.
 
-## ✨ Ready to Go!
+## Update Dependencies
 
-Once all packages are installed, you can run:
+To update to latest versions:
 
 ```bash
-# Terminal 1: Start backend
-cd backend
-npm start
+# Check for updates
+npm outdated
 
-# Terminal 2: Start frontend
-cd Frontend
-npm start
+# Update all packages
+npm update
+
+# Update specific package
+npm install package-name@latest
 ```
 
-Both should run without errors!
+## Ready to Deploy
 
----
+Once all dependencies are installed successfully, your project is ready to:
 
-**For quick start, see [QUICKSTART.md](QUICKSTART.md)**
+1. Start the development servers
+2. Deploy to production
+3. Add more packages as needed
+
+Enjoy building with your weather app!

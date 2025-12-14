@@ -215,11 +215,8 @@ Weather/
    - Add OpenWeatherMap API key
    - Add JWT secret
 4. **Install Dependencies**:
-
-```bash
-cd backend && npm install
-cd ../Frontend && npm install
-```
+   - Backend: `npm install` (from backend folder)
+   - Frontend: `npm install` (from Frontend folder)
 
 5. **Start Servers**:
    - Backend: `npm start` (from backend folder)
