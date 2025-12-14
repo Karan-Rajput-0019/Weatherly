@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": false,
-    "jsx": "react"
-  }
-}

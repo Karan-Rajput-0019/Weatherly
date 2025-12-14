@@ -1,9 +1,2 @@
-node_modules/
-.env
-.env.local
-.DS_Store
-build/
-dist/
-*.log
-.vscode/
-.idea/
+nnode_modules
+node_modules
