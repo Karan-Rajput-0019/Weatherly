@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const GEO_URL = 'https://api.openweathermap.org/geo/1.0';
 
 // Helper: build fitness score from a forecast item
 const buildFitnessScore = data => {
@@ -240,3 +241,40 @@ exports.searchCities = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+// NEW: reverse geocoding by coordinates
+exports.reverseGeocode = async (req, res) => {
+  try {
+    const { lat, lon } = req.query;
+
+    if (!lat || !lon) {
+      return res.status(400).json({
+        success: false,
+        message: 'lat and lon are required'
+      });
+    }
+
+    const url = `${GEO_URL}/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${OPENWEATHER_API_KEY}`;
+    const { data } = await axios.get(url); // array of places [web:377][web:379]
+
+    const place = Array.isArray(data) && data.length > 0 ? data[0] : null;
+    if (!place) {
+      return res.status(404).json({
+        success: false,
+        message: 'No location found for given coordinates'
+      });
+    }
+
+    res.json({
+      success: true,
+      city: place.name,
+      state: place.state,
+      country: place.country,
+      lat: place.lat,
+      lon: place.lon
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
