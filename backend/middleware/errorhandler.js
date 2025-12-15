@@ -12,4 +12,4 @@ const errorhandler = (err, req, res, next) => {
   });
 };
 
-module.exports = errorHandler;
+module.exports = errorhandler;
