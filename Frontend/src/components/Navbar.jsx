@@ -51,33 +51,42 @@ const Navbar = () => {
           </button>
 
           {isAuthenticated ? (
-            <>
-              <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-300">
-                {user?.name}
-              </span>
-              <button
-                onClick={logout}
-                className="px-3 py-1 bg-red-500 text-white rounded-md text-sm"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-gray-700 dark:text-gray-200 hover:text-primary"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="px-3 py-1 bg-primary text-white rounded-md text-sm"
-              >
-                Sign up
-              </Link>
-            </>
-          )}
+  <>
+    {user?.avatar && (
+      <img
+        src={user.avatar}
+        alt={user.name || 'Avatar'}
+        className="w-8 h-8 rounded-full object-cover border border-gray-300 dark:border-gray-600"
+      />
+    )}
+
+    <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-300">
+      {user?.name}
+    </span>
+
+    <button
+      onClick={logout}
+      className="px-3 py-1 bg-red-500 text-white rounded-md text-sm"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <Link
+      to="/login"
+      className="text-gray-700 dark:text-gray-200 hover:text-primary"
+    >
+      Login
+    </Link>
+    <Link
+      to="/signup"
+      className="px-3 py-1 bg-primary text-white rounded-md text-sm"
+    >
+      Sign up
+    </Link>
+  </>
+)}
         </div>
       </div>
     </nav>

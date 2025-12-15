@@ -2,6 +2,34 @@ const axios = require('axios');
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const buildFitnessScore = (data) => {
+  const temp = data.main.temp;
+  const humidity = data.main.humidity;
+  const wind = data.wind.speed;
+
+  let score = 100;
+
+  // Temperature impact
+  if (temp < 0 || temp > 32) score -= 35;
+  else if (temp < 5 || temp > 28) score -= 20;
+  else if (temp < 10 || temp > 24) score -= 10;
+
+  // Humidity impact
+  if (humidity > 80) score -= 20;
+  else if (humidity > 65) score -= 10;
+
+  // Wind impact
+  if (wind > 10) score -= 15;
+  else if (wind > 6) score -= 8;
+
+  if (score < 0) score = 0;
+  if (score > 100) score = 100;
+
+  const label =
+    score >= 75 ? 'Great' : score >= 50 ? 'Okay' : 'Poor';
+
+  return { score, label };
+};
 
 exports.getCurrentWeather = async (req, res) => {
   try {
@@ -90,6 +118,52 @@ exports.getForecast = async (req, res) => {
         city: data.city.name,
         country: data.city.country,
         forecast
+      }
+    });
+  } catch (err) {
+    if (err.response?.status === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'City not found'
+      });
+    }
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+exports.getFitnessForecast = async (req, res) => {
+  try {
+    const { city } = req.query;
+
+    if (!city) {
+      return res.status(400).json({
+        success: false,
+        message: 'city is required for fitness forecast'
+      });
+    }
+
+    // Reuse the 5-day / 3-hour forecast
+    const url = `${BASE_URL}/forecast?appid=${OPENWEATHER_API_KEY}&units=metric&q=${city}`;
+    const { data } = await axios.get(url);
+
+    const points = data.list.slice(0, 16).map(item => {
+      const time = item.dt * 1000;
+      const fitness = buildFitnessScore(item);
+      return {
+        time,
+        temperature: item.main.temp,
+        humidity: item.main.humidity,
+        windSpeed: item.wind.speed,
+        score: fitness.score,
+        label: fitness.label
+      };
+    });
+
+    res.json({
+      success: true,
+      data: {
+        city: data.city.name,
+        country: data.city.country,
+        points
       }
     });
   } catch (err) {

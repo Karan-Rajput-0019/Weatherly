@@ -6,6 +6,19 @@ const generateToken = userId =>
     expiresIn: process.env.JWT_EXPIRE || '7d'
   });
 
+// Helper to safely normalize preferences
+const normalizePreferences = pref => {
+  if (!pref) return {};
+  if (typeof pref === 'string') {
+    try {
+      return JSON.parse(pref);
+    } catch {
+      return {};
+    }
+  }
+  return pref; // already an object
+};
+
 exports.signup = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
@@ -72,10 +85,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const isValid = await UserService.comparePassword(
-      password,
-      user.password
-    );
+    const isValid = await UserService.comparePassword(password, user.password);
     if (!isValid) {
       return res.status(401).json({
         success: false,
@@ -84,9 +94,7 @@ exports.login = async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    const preferences = user.preferences
-      ? JSON.parse(user.preferences)
-      : {};
+    const preferences = normalizePreferences(user.preferences);
 
     res.json({
       success: true,
@@ -114,9 +122,7 @@ exports.getProfile = async (req, res) => {
       });
     }
 
-    const preferences = user.preferences
-      ? JSON.parse(user.preferences)
-      : {};
+    const preferences = normalizePreferences(user.preferences);
 
     res.json({
       success: true,
@@ -132,7 +138,14 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, avatar, preferences, defaultLocation } = req.body;
+    const {
+      name,
+      avatar,
+      preferences,
+      defaultLocation,
+      profileMode,
+      activities
+    } = req.body;
 
     const updateData = {};
     if (name) updateData.name = name;
@@ -140,17 +153,18 @@ exports.updateProfile = async (req, res) => {
     if (preferences) updateData.preferences = JSON.stringify(preferences);
     if (defaultLocation)
       updateData.default_location = JSON.stringify(defaultLocation);
+    if (profileMode) updateData.profile_mode = profileMode;
+    if (activities) updateData.activities = JSON.stringify(activities);
 
     const user = await UserService.update(req.userId, updateData);
+    
 
     res.json({
       success: true,
       message: 'Profile updated successfully',
       user: {
         ...user,
-        preferences: user.preferences
-          ? JSON.parse(user.preferences)
-          : {}
+        preferences: normalizePreferences(user.preferences)
       }
     });
   } catch (err) {
@@ -164,3 +178,4 @@ exports.logout = (req, res) => {
     message: 'Logout successful. Remove token on client.'
   });
 };
+
