@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 const errorhandler = require('./middleware/errorhandler');
 
 dotenv.config();
-// connectDB();
+connectDB();
 
 const app = express();
 
