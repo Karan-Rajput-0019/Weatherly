@@ -1,10 +1,9 @@
-const db = require('../config/db');
-
+const { pool } = require('../config/db');
 class AlertService {
   static async create(data) {
     const { user_id, location, alert_type, condition, threshold } = data;
 
-    const [result] = await db.pool.execute(
+    const [result] = await pool.execute(
       `INSERT INTO alerts
        (user_id, location, alert_type, \`condition\`, threshold, is_active, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, 1, NOW(), NOW())`,
@@ -15,7 +14,7 @@ class AlertService {
   }
 
   static async findByUserId(userId) {
-    const [rows] = await db.pool.execute(
+    const [rows] = await pool.execute(
       'SELECT * FROM alerts WHERE user_id = ? ORDER BY created_at DESC',
       [userId]
     );
@@ -33,7 +32,7 @@ class AlertService {
     const values = entries.map(([, value]) => value);
     values.push(id);
 
-    await db.pool.execute(
+    await pool.execute(
       `UPDATE alerts SET ${fields}, updated_at = NOW() WHERE id = ?`,
       values
     );
@@ -42,7 +41,7 @@ class AlertService {
   }
 
   static async delete(id) {
-    const [result] = await db.pool.execute(
+    const [result] = await pool.execute(
       'DELETE FROM alerts WHERE id = ?',
       [id]
     );
@@ -50,7 +49,7 @@ class AlertService {
   }
 
   static async findById(id) {
-    const [rows] = await db.pool.execute(
+    const [rows] = await pool.execute(
       'SELECT * FROM alerts WHERE id = ?',
       [id]
     );
