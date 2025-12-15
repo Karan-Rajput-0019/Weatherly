@@ -1,10 +1,9 @@
-const db = require('../config/db');
-
+const { pool } = require('../config/db');
 class FavoriteService {
   static async create(data) {
     const { user_id, city, country, latitude, longitude, nickname } = data;
 
-    const [result] = await db.pool.execute(
+    const [result] = await pool.execute(
       `INSERT INTO favorites
        (user_id, city, country, latitude, longitude, nickname, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
@@ -15,7 +14,7 @@ class FavoriteService {
   }
 
   static async findByUserId(userId) {
-    const [rows] = await db.pool.execute(
+    const [rows] = await pool.execute(
       'SELECT * FROM favorites WHERE user_id = ? ORDER BY created_at DESC',
       [userId]
     );
@@ -23,7 +22,7 @@ class FavoriteService {
   }
 
   static async delete(id) {
-    const [result] = await db.pool.execute(
+    const [result] = await pool.execute(
       'DELETE FROM favorites WHERE id = ?',
       [id]
     );
@@ -31,7 +30,7 @@ class FavoriteService {
   }
 
   static async findDuplicate(userId, city, country) {
-    const [rows] = await db.pool.execute(
+    const [rows] = await pool.execute(
       'SELECT id FROM favorites WHERE user_id = ? AND city = ? AND country = ?',
       [userId, city, country]
     );
