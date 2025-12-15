@@ -2,7 +2,9 @@ const axios = require('axios');
 
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
-const buildFitnessScore = (data) => {
+
+// Helper: build fitness score from a forecast item
+const buildFitnessScore = data => {
   const temp = data.main.temp;
   const humidity = data.main.humidity;
   const wind = data.wind.speed;
@@ -25,8 +27,7 @@ const buildFitnessScore = (data) => {
   if (score < 0) score = 0;
   if (score > 100) score = 100;
 
-  const label =
-    score >= 75 ? 'Great' : score >= 50 ? 'Okay' : 'Poor';
+  const label = score >= 75 ? 'Great' : score >= 50 ? 'Okay' : 'Poor';
 
   return { score, label };
 };
@@ -95,29 +96,40 @@ exports.getForecast = async (req, res) => {
 
     const { data } = await axios.get(url);
 
-    const forecast = {};
+    // Group 3‑hour entries by date
+    const byDate = {};
     data.list.forEach(item => {
-      const date = new Date(item.dt * 1000)
-        .toISOString()
-        .split('T')[0];
-      if (!forecast[date]) forecast[date] = [];
-      forecast[date].push({
-        time: new Date(item.dt * 1000).toLocaleTimeString(),
-        temperature: item.main.temp,
-        humidity: item.main.humidity,
-        description: item.weather[0].description,
-        icon: item.weather[0].icon,
-        windSpeed: item.wind.speed,
-        pressure: item.main.pressure
-      });
+      const date = new Date(item.dt * 1000).toISOString().split('T')[0];
+      if (!byDate[date]) byDate[date] = [];
+      byDate[date].push(item);
     });
+
+    // Build compact 5‑day summary
+    const days = Object.keys(byDate)
+      .slice(0, 5)
+      .map(date => {
+        const items = byDate[date];
+        const temps = items.map(i => i.main.temp);
+        const temp_min = Math.min(...temps);
+        const temp_max = Math.max(...temps);
+
+        const mid = items[Math.floor(items.length / 2)];
+
+        return {
+          date,
+          temp_min,
+          temp_max,
+          description: mid.weather[0].description,
+          icon: mid.weather[0].icon
+        };
+      });
 
     res.json({
       success: true,
       data: {
         city: data.city.name,
         country: data.city.country,
-        forecast
+        days
       }
     });
   } catch (err) {
@@ -130,6 +142,7 @@ exports.getForecast = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
 exports.getFitnessForecast = async (req, res) => {
   try {
     const { city } = req.query;
@@ -141,10 +154,10 @@ exports.getFitnessForecast = async (req, res) => {
       });
     }
 
-    // Reuse the 5-day / 3-hour forecast
     const url = `${BASE_URL}/forecast?appid=${OPENWEATHER_API_KEY}&units=metric&q=${city}`;
     const { data } = await axios.get(url);
 
+    // Intraday points (first ~48 hours)
     const points = data.list.slice(0, 16).map(item => {
       const time = item.dt * 1000;
       const fitness = buildFitnessScore(item);
@@ -158,12 +171,36 @@ exports.getFitnessForecast = async (req, res) => {
       };
     });
 
+    // Weekly summary from all forecast entries, next 5 days
+    const dailyMap = {};
+    data.list.forEach(item => {
+      const date = new Date(item.dt * 1000);
+      const dayKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+      const { score } = buildFitnessScore(item);
+      if (!dailyMap[dayKey]) {
+        dailyMap[dayKey] = { total: 0, count: 0, dateObj: date };
+      }
+      dailyMap[dayKey].total += score;
+      dailyMap[dayKey].count += 1;
+    });
+
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const week = Object.entries(dailyMap)
+      .sort((a, b) => a[1].dateObj - b[1].dateObj) // chronological
+      .slice(0, 5) // next 5 days
+      .map(([dateStr, { total, count, dateObj }]) => {
+        const avgScore = Math.round(total / count);
+        const day = dayNames[dateObj.getDay()];
+        return { day, avgScore };
+      });
+
     res.json({
       success: true,
       data: {
         city: data.city.name,
         country: data.city.country,
-        points
+        points,
+        week
       }
     });
   } catch (err) {

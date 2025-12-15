@@ -104,6 +104,9 @@ exports.login = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        avatar: user.avatar,
+        profile_mode: user.profile_mode,
+        activities: user.activities ? JSON.parse(user.activities) : [],
         preferences
       }
     });
@@ -157,7 +160,6 @@ exports.updateProfile = async (req, res) => {
     if (activities) updateData.activities = JSON.stringify(activities);
 
     const user = await UserService.update(req.userId, updateData);
-    
 
     res.json({
       success: true,
@@ -178,4 +180,3 @@ exports.logout = (req, res) => {
     message: 'Logout successful. Remove token on client.'
   });
 };
-

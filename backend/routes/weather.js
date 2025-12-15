@@ -9,3 +9,6 @@ router.get('/search', weatherController.searchCities);
 router.get('/fitness', auth, weatherController.getFitnessForecast);
 
 module.exports = router;
+
+
+
