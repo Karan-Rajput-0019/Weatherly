@@ -1,33 +1,24 @@
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 const isProd = process.env.NODE_ENV === 'production';
 
-const pool = mysql.createPool({
-  host: isProd ? process.env.MYSQLHOST : process.env.MYSQL_HOST,
-  user: isProd ? process.env.MYSQLUSER : process.env.MYSQL_USER,
-  password: isProd ? process.env.MYSQLPASSWORD : process.env.MYSQL_PASSWORD,
-  database: isProd ? process.env.MYSQLDATABASE : process.env.MYSQL_DATABASE,
-  port: isProd ? process.env.MYSQLPORT : process.env.MYSQL_PORT || 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProd ? { rejectUnauthorized: false } : false
 });
 
 const connectDB = async () => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await pool.connect();
     console.log(
-      `✅ MySQL Connected: ${connection.config.host}:${connection.config.port}`
+      `🌤️ PostgreSQL connected: ${connection.host || 'Railway PostgreSQL'}`
     );
     connection.release();
-    return pool;
   } catch (error) {
-    console.error('❌ MySQL connection failed:', error.message);
+    console.error('❌ Database connection error:', error.message);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
-module.exports.pool = pool;
-
+module.exports = { pool, connectDB };
