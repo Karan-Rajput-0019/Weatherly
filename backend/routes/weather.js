@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const weatherController = require('../controllers/weatherController');
+const weathercontroller = require('../controllers/weathercontroller');
 const auth = require('../middleware/auth');
 
-router.get('/current', weatherController.getCurrentWeather);
-router.get('/forecast', weatherController.getForecast);
-router.get('/search', weatherController.searchCities);
-router.get('/fitness', auth, weatherController.getFitnessForecast);
+router.get('/current', weathercontroller.getCurrentWeather);
+router.get('/forecast', weathercontroller.getForecast);
+router.get('/search', weathercontroller.searchCities);
+router.get('/fitness', auth, weathercontroller.getFitnessForecast);
 
 // NEW: reverse geocoding endpoint used by weatherService.reverseGeocode
-router.get('/reverse-geocode', weatherController.reverseGeocode);
+router.get('/reverse-geocode', weathercontroller.reverseGeocode);
 
 module.exports = router;
 

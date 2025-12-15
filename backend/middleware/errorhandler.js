@@ -1,5 +1,5 @@
 
-const errorHandler = (err, req, res, next) => {
+const errorhandler = (err, req, res, next) => {
   console.error('Error:', err);
 
   const statusCode = err.statusCode || 500;
