@@ -19,9 +19,8 @@ const weatherService = {
   forecastByCoords: (lat, lon) =>
     API.get('/weather/forecast', { params: { lat, lon } }),
 
-  // NEW: use backend reverse-geocoding endpoint
   reverseGeocode: (lat, lon) =>
-    API.get('/weather/reverse-geocode', { params: { lat, lon } }),
+    API.get('/weather/reverse-geocode', { params: { lat, lon } })
 };
 
 export default weatherService;

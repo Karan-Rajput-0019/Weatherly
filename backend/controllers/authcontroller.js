@@ -85,8 +85,8 @@ exports.login = async (req, res) => {
       });
     }
 
-    const isValid = await UserService.comparePassword(password, user.password);
-    if (!isValid) {
+    const isValid = await UserService.verifyPassword(password, user.password);
+      if (!isValid) {
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'

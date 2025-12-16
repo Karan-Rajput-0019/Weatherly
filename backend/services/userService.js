@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 class UserService {
   static async create(userData) {
     const { name, email, password } = userData;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await pool.query(
@@ -27,7 +28,7 @@ class UserService {
 
   static async findById(id) {
     const result = await pool.query(
-      'SELECT id, name, email, preferences, created_at, updated_at FROM users WHERE id = $1',
+      'SELECT id, name, email, avatar, profile_mode, activities, preferences, default_location, created_at, updated_at FROM users WHERE id = $1',
       [id]
     );
 
@@ -46,6 +47,41 @@ class UserService {
   static async verifyPassword(plainPassword, hashedPassword) {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
+
+  // NEW: generic update for profile
+  static async update(userId, updateData) {
+    const fields = [];
+    const values = [];
+    let idx = 1;
+
+    for (const [key, value] of Object.entries(updateData)) {
+      fields.push(`${key} = $${idx}`);
+      values.push(value);
+      idx++;
+    }
+
+    // If nothing to update, just return current user
+    if (fields.length === 0) {
+      const result = await pool.query(
+        'SELECT id, name, email, avatar, profile_mode, activities, preferences, default_location, created_at, updated_at FROM users WHERE id = $1',
+        [userId]
+      );
+      return result.rows[0];
+    }
+
+    values.push(userId); // for WHERE clause
+
+    const query = `
+      UPDATE users
+      SET ${fields.join(', ')}, updated_at = NOW()
+      WHERE id = $${values.length}
+      RETURNING id, name, email, avatar, profile_mode, activities, preferences, default_location, created_at, updated_at
+    `;
+
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  }
 }
 
 module.exports = UserService;
+
