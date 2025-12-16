@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 const errorhandler = require('./middleware/errorhandler');
 
 dotenv.config();
@@ -15,6 +15,7 @@ app.use(
     credentials: true
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,7 +39,7 @@ app.use(errorhandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(
-    `🌤️  Weatherly backend (MySQL) running on http://localhost:${PORT}`
+    `🌤️ Weatherly backend (PostgreSQL) running on http://localhost:${PORT}`
   );
 });
 
