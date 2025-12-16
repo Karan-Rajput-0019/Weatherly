@@ -1,66 +1,50 @@
-const db = require('../config/db');
+const { pool } = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 class UserService {
-  static async create({ name, email, password }) {
+  static async create(userData) {
+    const { name, email, password } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const [result] = await db.pool.execute(
-      `INSERT INTO users (name, email, password, preferences, created_at, updated_at)
-       VALUES (?, ?, ?, ?, NOW(), NOW())`,
-      [
-        name,
-        email.toLowerCase(),
-        hashedPassword,
-        JSON.stringify({
-          unit: 'metric',
-          theme: 'light',
-          notifications: true,
-          language: 'en'
-        })
-      ]
+    const result = await pool.query(
+      `INSERT INTO users (name, email, password, created_at, updated_at)
+       VALUES ($1, $2, $3, NOW(), NOW())
+       RETURNING id, name, email, preferences, created_at, updated_at`,
+      [name, email, hashedPassword]
     );
 
-    return { id: result.insertId, name, email };
+    return result.rows[0];
   }
 
   static async findByEmail(email) {
-    const [rows] = await db.pool.execute(
-      'SELECT * FROM users WHERE email = ?',
-      [email.toLowerCase()]
+    const result = await pool.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
     );
-    return rows[0];
-  }
 
-  static async comparePassword(password, hashedPassword) {
-    return bcrypt.compare(password, hashedPassword);
+    return result.rows[0];
   }
 
   static async findById(id) {
-    const [rows] = await db.pool.execute(
-      `SELECT id, name, email, avatar, preferences, default_location,
-              created_at, updated_at
-       FROM users
-       WHERE id = ?`,
+    const result = await pool.query(
+      'SELECT id, name, email, preferences, created_at, updated_at FROM users WHERE id = $1',
       [id]
     );
-    return rows[0];
+
+    return result.rows[0];
   }
 
-  static async update(id, updateData) {
-    const entries = Object.entries(updateData);
-    if (!entries.length) return this.findById(id);
-
-    const fields = entries.map(([key]) => `${key} = ?`).join(', ');
-    const values = entries.map(([, value]) => value);
-    values.push(id);
-
-    await db.pool.execute(
-      `UPDATE users SET ${fields}, updated_at = NOW() WHERE id = ?`,
-      values
+  static async updatePreferences(userId, preferences) {
+    const result = await pool.query(
+      'UPDATE users SET preferences = $1, updated_at = NOW() WHERE id = $2 RETURNING id, name, email, preferences',
+      [JSON.stringify(preferences), userId]
     );
 
-    return this.findById(id);
+    return result.rows[0];
+  }
+
+  static async verifyPassword(plainPassword, hashedPassword) {
+    return await bcrypt.compare(plainPassword, hashedPassword);
   }
 }
 

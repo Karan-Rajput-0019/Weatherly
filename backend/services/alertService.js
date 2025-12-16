@@ -1,66 +1,74 @@
-const db = require('../config/db');
+const { pool } = require('../config/db');
 
 class AlertService {
-  static async create(data) {
-    const { user_id, location, alert_type, condition, threshold } = data;
+  static async create(alertData) {
+    const { user_id, location, alert_type, condition, threshold } = alertData;
 
-    const [result] = await db.pool.execute(
+    const result = await pool.query(
       `INSERT INTO alerts
-       (user_id, location, alert_type, \`condition\`, threshold, is_active, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 1, NOW(), NOW())`,
+       (user_id, location, alert_type, condition, threshold, is_active, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, true, NOW(), NOW())
+       RETURNING *`,
       [user_id, JSON.stringify(location), alert_type, condition, threshold]
     );
 
-    return { id: result.insertId, ...data, is_active: 1 };
+    return result.rows[0];
   }
 
   static async findByUserId(userId) {
-    const [rows] = await db.pool.execute(
-      'SELECT * FROM alerts WHERE user_id = ? ORDER BY created_at DESC',
+    const result = await pool.query(
+      'SELECT * FROM alerts WHERE user_id = $1 ORDER BY created_at DESC',
       [userId]
     );
-    return rows.map(row => ({
-      ...row,
-      location: row.location ? JSON.parse(row.location) : null
-    }));
+
+    return result.rows;
   }
 
-  static async update(id, updateData) {
-    const entries = Object.entries(updateData);
-    if (!entries.length) return this.findById(id);
-
-    const fields = entries.map(([key]) => `${key} = ?`).join(', ');
-    const values = entries.map(([, value]) => value);
-    values.push(id);
-
-    await db.pool.execute(
-      `UPDATE alerts SET ${fields}, updated_at = NOW() WHERE id = ?`,
-      values
+  static async findActiveByUserId(userId) {
+    const result = await pool.query(
+      'SELECT * FROM alerts WHERE user_id = $1 AND is_active = true ORDER BY created_at DESC',
+      [userId]
     );
 
-    return this.findById(id);
+    return result.rows;
   }
 
-  static async delete(id) {
-    const [result] = await db.pool.execute(
-      'DELETE FROM alerts WHERE id = ?',
-      [id]
+  static async update(id, userId, updates) {
+    const { alert_type, condition, threshold, is_active } = updates;
+
+    const result = await pool.query(
+      `UPDATE alerts
+       SET alert_type = $1, condition = $2, threshold = $3, is_active = $4, updated_at = NOW()
+       WHERE id = $5 AND user_id = $6
+       RETURNING *`,
+      [alert_type, condition, threshold, is_active, id, userId]
     );
-    return result.affectedRows > 0;
+
+    return result.rows[0];
   }
 
-  static async findById(id) {
-    const [rows] = await db.pool.execute(
-      'SELECT * FROM alerts WHERE id = ?',
-      [id]
+  static async delete(id, userId) {
+    const result = await pool.query(
+      'DELETE FROM alerts WHERE id = $1 AND user_id = $2 RETURNING *',
+      [id, userId]
     );
-    const row = rows[0];
-    if (!row) return null;
-    return {
-      ...row,
-      location: row.location ? JSON.parse(row.location) : null
-    };
+
+    return result.rows[0];
+  }
+
+  static async toggleActive(id, userId) {
+    const result = await pool.query(
+      `UPDATE alerts
+       SET is_active = NOT is_active, updated_at = NOW()
+       WHERE id = $1 AND user_id = $2
+       RETURNING *`,
+      [id, userId]
+    );
+
+    return result.rows[0];
   }
 }
 
 module.exports = AlertService;
+
+
