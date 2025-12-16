@@ -12,7 +12,7 @@ const connectDB = async () => {
   try {
     const connection = await pool.connect();
     console.log(
-      `🌤️ PostgreSQL connected: ${connection.host || 'Railway PostgreSQL'}`
+      `🐘 PostgreSQL connected: ${connection.host || 'Render PostgreSQL'}`
     );
     connection.release();
   } catch (error) {
@@ -22,3 +22,4 @@ const connectDB = async () => {
 };
 
 module.exports = { pool, connectDB };
+
